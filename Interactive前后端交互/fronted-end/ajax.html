@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>$ajax</title>
+</head>
+<body>
+    <button>clickme触发原生ajax实现promise</button>
+    <script src="https://cdn.staticfile.org/jquery/1.10.0/jquery.min.js"></script>
+    <script>
+        // 通过回调嵌套保证异步任务的顺序-出现回调地狱
+        $.ajax({
+            url: "http://127.0.0.1:3000/data",
+            success: function(res) {
+                console.log(res);
+                $.ajax({
+                    url: "http://127.0.0.1:3000/zs",
+                    success: function(res) {
+                        console.log(res);
+                        $.ajax({
+                            url: "http://127.0.0.1:3000/xzy",
+                            success: function(res) {
+                                console.log(res);
+                            }
+                        })
+                    }
+                })
+            }
+        })
+        // Promise类型
+        console.log(typeof Promise);
+        console.dir(Promise); // 各种键值对与Promise中的API
+        console.log("---");
+        // Promise基本使用
+        /* 1.实例化Promise对象 => 使用new来构建一个 Promise实例; Promise 的构造函数接收一个函数参数,并且传入两个参数：  resolve、reject.分别表示异步操作执行成功后的回调函数和异步操作执行失败后的回调函数 */
+        var p = new Promise(function(resolve, reject){ // 这两个参数都是方法，可以调用
+        // 这里setTimeout实现异步任务
+        setTimeout(function(){
+            var flag = Math.random(0,1);
+            if(flag>0.5) {
+            // 正常情况
+            resolve('hello');
+            }else{
+            // 异常情况
+            reject('出错了');
+            }
+        }, 1500);
+        });
+        // Promise实例生成以后,可用then方法指定resolved状态和reject状态的回调函数 
+        // 在then方法中,也可以直接return数据而不是Promise对象,在后面的then中就可以接收到数据
+        p.then(function(yes){
+        console.log(yes)
+        },function(no){
+        console.log(no)})
+        // 另一种方式
+        p.then(function(haha){console.log(haha);}).catch(function(err){console.log(err);}).finally((zszs)=>{console.log("xzy666");})
+
+        // 原生ajax的promise处理方式 = Promise处理ajax请求
+        $("button").on('click', function() {
+            var p = new Promise((resolve,reject)=>{
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                    if(xhr.readyState !=4) return;
+                    if(xhr.readyState == 4 && xhr.status ==200) {
+                        // 正常情况直接调用 resolve
+                        resolve(xhr.responseText);
+                    }else{
+                        // 处流异常
+                        reject("error")
+                    }
+                }
+                xhr.open('get',"http://127.0.0.1:3000/data");
+                xhr.send();
+            })
+            return p.then(function(yes){console.log(yes);},function(err){console.log(err);});
+        })
+        // then参数中的返回值=>1.返回Promise实例对象(又可以通过.then()调用)、2.返回普通值(使用then中函数参数接受)
+    </script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>axios</title>
+</head>
+<body>
+    <script src="../../srcjs/axios/dist/axios.js"></script>
+    <script>
+        axios.get('http://127.0.0.1:3000/axiosxzy').then(res=>console.log(res.data)) // Hi,axios-xzy
+        axios.get('http://127.0.0.1:3000/axioswithparameter?usr=zairesinatra').then(res=>console.log(res.data)) // axios got the parameter => zairesinatra
+        axios.get('http://127.0.0.1:3000/axioswithparameter?usr=zairesinatra').then(res=>console.log(res)) // Object
+        axios.get('http://127.0.0.1:3000/restfulaxios/666').then(res=>console.log(res.data)) // axios got the restful parameter => 666
+        axios.get('http://127.0.0.1:3000/paramsaxios', {
+            params: {
+                id: 199719971997
+            }
+        }).then((res)=>{console.log(res.data)})
+        axios.delete('http://127.0.0.1:3000/deleteaxios', {
+            // 这里注意-前端用params传参后台应该使用query而不是params
+            params: {
+                id: 199719691967
+            }
+        }).then(function(res){console.log(res.data)})
+        axios.post('http://localhost:3000/axios', {
+            usr: 'zairesinatra',
+            pwd: 123
+        }).then(function(ret){console.log(ret)})
+        axios.put('http://localhost:3000/axiosjson').then(function(res){console.log(res),console.log(res.data.usr)})
+    </script>
+</body>
+</html>

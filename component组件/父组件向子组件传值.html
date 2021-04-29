@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>父组件向子组件传值</title>
+</head>
+<body>
+    <div id="app">
+        <div>{{fatherdata}}</div>
+        <!-- 以属性的方式传递过来 -->
+        ---props:[]---
+        <soncomponentzs :title="age" say="hidd"></soncomponentzs>
+        <soncomponentzs title="General-manager" say="yes"></soncomponentzs>
+        <!-- 直接用父组件数据用不了 -->
+        ---直接用:---<soncomponentzs>{{age}}</soncomponentzs>
+    </div>
+    <script src="../srcjs/vue.js"></script>
+    <script>
+        Vue.component('soncomponentzs', {
+            props: ['title','say'],
+            data: function() {
+                return {
+                    sondata: 'xzy'
+                }
+            },
+            template: `<div>{{sondata + "---" + title + "---" + say}}</div>`
+        })
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                fatherdata: 'xw',
+                age: '54',
+                yes: 'hidad'
+            },
+            methods: {
+
+            }
+        })
+    </script>
+</body>
+</html>

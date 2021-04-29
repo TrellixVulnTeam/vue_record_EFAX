@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue-router基本使用</title>
+</head>
+<body>
+    <div id="zs">
+        <!-- router-link 是 Vue 中提供的标签,默认渲染为 a 标签 -->
+        <!-- to 属性会被渲染为 href 属性 -->
+        <!-- to属性的值会被渲染为 # 开头的 hash 地址 -->
+        <router-link to="/usr">usr</router-link>
+        <router-link to="/xzy">xzy</router-link>
+
+        <!-- 路由占位符、填充位 -->
+        <!-- 通过路由规则匹配到的组件将被渲染到此为止 -->
+        <router-view></router-view>
+    </div>
+    <!-- 为全局 window 对象挂载 Vue 构造函数 -->
+    <script src="../srcjs/vue.js"></script>
+    <!-- vue-router内部依赖于vue -->
+    <!-- 为全局 window 对象挂载 VueRouter 构造函数 -->
+    <script src="../srcjs/vue-router.js"></script>
+    <script>
+        const usr = {
+            template:`<span>usr组件</span>`
+        }
+        const xzy = {
+            template:`<span>xzy组件</span>`
+        }
+
+        // 创建路由实例对象
+        const router = new VueRouter({
+            // 所有的路由规则
+            routes: [
+                // component只接受组件对象不接受字符串
+                // path表示当前路由规则配置的 hash 地址
+                // component表示当前路由规则展示的组件
+                // 路由重定向
+                { path: "/", redirect: "/usr" },
+                { path: "/usr", component: usr },
+                { path: "/xzy", component: xzy }
+            ]
+        })
+        var vm = new Vue({
+            el: "#zs",
+            data: {
+
+            },
+            methods: {
+
+            },
+            // 挂载路由实例对象
+            // router: router可以简写
+            router
+        })
+    </script>
+</body>
+</html>

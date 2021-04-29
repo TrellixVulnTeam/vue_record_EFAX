@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v-bind:style</title>
+</head>
+<body>
+    <div id="app">
+        <!-- CSS 属性名可以用驼峰式 (camelCase) 或短横线分隔 (kebab-case，记得用单引号括起来)    -->
+        <div v-bind:style="{border: borderStyle, width: widthStyle, height: heightStyle}"></div>
+        <button v-on:click="handle">clickme</button>
+        <div v-bind:style="objStyles"></div>
+        <!-- 一定不要忘记带冒号 -->
+        <!-- 组语法可以将多个样式对象应用到同一个元素 -->
+        <div v-bind:style="[objStyles, arrTest]"></div>
+    </div>
+    <script src="../srcjs/vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                borderStyle: '1px solid blue',
+                widthStyle: '100px',
+                heightStyle: "200px",
+                objStyles: {
+                    border: '1px solid green',
+                    width: '200px',
+                    height: '100px'
+                },
+                arrTest: {
+                    border: '5px solid orange',
+                    backgroundColor: 'blue'
+                }
+            },
+            methods: {
+                handle: function() {
+                    this.heightStyle = '100px',
+                    this.objStyles.width = '100px'
+                }
+            }
+        })
+    </script>
+</body>
+</html>

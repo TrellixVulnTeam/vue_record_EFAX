@@ -1,0 +1,17 @@
+li{
+    list-style : none
+}
+::placeholder {
+    color: coral;
+}
+
+#zs {
+    width: 500px;
+    height: 500px;
+    /* background-color: #424242; */
+    /* background-color: transparent; */
+    background-image: url(../images/zs.JPG);
+    background-size:cover;
+    /* background-repeat: no-repeat;
+    background-attachment:fixed; */
+}

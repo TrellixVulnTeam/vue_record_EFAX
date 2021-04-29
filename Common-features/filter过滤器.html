@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>filter</title>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-model="msg">
+        <!-- 插值表达式 -->
+        <div>{{msg | upper}}</div>
+        <!-- 级联方式 -->
+        <div>{{msg | upper | lower}}</div>
+        <br />
+        <!-- 绑定属性使用过滤器 -->
+        <div :abc="msg | upper">测试数据{{msg}}</div>
+        <!-- 局部过滤器 -->
+        <br />
+        <div>{{name | upp}}</div>
+    </div>
+    <script src="../srcjs/vue.js"></script>
+    <script>
+        // 过滤器全局定义
+        Vue.filter('upper', function(val){
+            return val.charAt(0).toUpperCase() + val.slice(1);
+        })
+        Vue.filter('lower', function(val){
+            return val.charAt(0).toLowerCase() + val.slice(1);
+        })
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                msg: "",
+                name: "zairesinatra"
+            },
+            filters: {
+                upp: function (val) {
+                    // 过滤器中一定要有返回值,这样外界使用过滤器的时候才能拿到结果
+                    return val.toUpperCase()
+                }
+            }
+        })
+    </script>
+</body>
+</html>

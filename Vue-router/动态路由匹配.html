@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>路由嵌套</title>
+</head>
+<body>
+    <div id="zs">
+        <!-- router-link 是 Vue 中提供的标签,默认渲染为 a 标签 -->
+        <!-- to 属性会被渲染为 href 属性 -->
+        <!-- to属性的值会被渲染为 # 开头的 hash 地址 -->
+        <router-link to="/usr/1">usr1</router-link>
+        <router-link to="/usr/2">usr2</router-link>
+        <router-link to="/usr/3">usr3</router-link>
+        <router-link to="/usr/4">usr4</router-link>
+        <router-link to="/usr/5">usr5</router-link>
+        <router-link to="/usr/6">usr6</router-link>
+        <router-link to="/xzy">xzy</router-link>
+        <router-link to="/testprops/1">testprops</router-link>
+        <router-link to="/testprops/2">testprops</router-link>
+        <router-link to="/testprops/3">testprops</router-link>
+        <br />
+        <router-link to="/objprops/1">objprops1</router-link>
+        <router-link to="/objprops/2">objprops2</router-link>
+        <router-link to="/objprops/3">objprops3</router-link>
+        <router-link to="/threebody/1">threebody1</router-link>
+        <router-link to="/threebody/2">threebody2</router-link>
+        <router-link to="/threebody/3">threebody3</router-link>
+
+        <!-- 路由占位符、填充位 -->
+        <!-- 通过路由规则匹配到的组件将被渲染到此为止 -->
+        <router-view></router-view>
+    </div>
+    <!-- 为全局 window 对象挂载 Vue 构造函数 -->
+    <script src="../srcjs/vue.js"></script>
+    <!-- vue-router内部依赖于vue -->
+    <!-- 为全局 window 对象挂载 VueRouter 构造函数 -->
+    <script src="../srcjs/vue-router.js"></script>
+    <script>
+        const usr = {
+            // $route.params路由参数对象
+            template:`<span>usr组件--{{$route.params.n}}</span>`
+        }
+        const xzy = {
+            template:`<div>
+                    <h1>xzy组件</h1>
+                    <hr/>
+                    <!--在父组件中填充路由组件与占位符-->
+
+                    <!--子路由链接-->
+                    <router-link to="/xzy/tab">tab</router-link>
+                    <router-link to="/xzy/slogan">slogan</router-link>
+
+                    <!--子路由占位符-->
+                    <router-view />
+                </div>`
+        }
+        const testprops = {
+            props: [ "id" ],
+            template: `
+                <span>防止 $route.params 耦合 --{{ id }}</span>
+            `
+        }
+        const objprops = {
+            props: ["username", "age"],
+            template: `<div>网名为: {{ username }} + '---' + 年龄为: {{ age }}</div>`
+        }
+        const threebody = {
+            props: ['color', 'appearance', 'fn'],
+            template: `<div>{{ color + '---' + appearance + '---' + fn }}</div>`
+        }
+
+        // 子路由子组件
+        const tab = {
+            template: `<span>tab子组件</span>`
+        }
+
+        const slogan = {
+            template: `<span>Yesterday you said tomorrow</span>`
+        }
+
+        // 创建路由实例对象
+        const router = new VueRouter({
+            // 所有的路由规则
+            routes: [
+                // component只接受组件对象不接受字符串
+                // path表示当前路由规则配置的 hash 地址
+                // component表示当前路由规则展示的组件
+                // 路由重定向
+                { path: "/", redirect: "/usr" },
+                { path: "/usr/:n", component: usr },
+                // children属性设置子路由规则
+                { path: "/xzy", component: xzy, children: [
+                    { path: "/xzy/tab", component: tab},
+                    { path: "/xzy/slogan", component: slogan}
+                ] },
+                { path: "/testprops/:id", component: testprops, props: true },
+                // props是对象也不能把/:idd省略
+                { path: '/objprops/:idd', component: objprops, props: { username:'zs', age: 23 } },
+                { path: "/threebody/:fn", component: threebody, props: route => ({ color: "black", appearance: "polygon", fn: route.params.fn })}
+            ]
+        })
+        var vm = new Vue({
+            el: "#zs",
+            data: {
+
+            },
+            methods: {
+
+            },
+            // 挂载路由实例对象
+            // router: router可以简写
+            router
+        })
+    </script>
+</body>
+</html>

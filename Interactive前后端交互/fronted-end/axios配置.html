@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>axios配置</title>
+</head>
+<body>
+    <script src="../../srcjs/axios/dist/axios.js"></script>
+    <script>
+        // axios配置
+        // 配置请求的基本URL地址
+        axios.defaults.baseURL = 'http://127.0.0.1:3000/';
+        // 配置请求头信息
+        // 跨域来说请求头需要后端做配置
+        axios.defaults.headers['zstoken'] = 'zairesinatraAuthorization'
+        axios.get('shortURL').then((res)=>{console.log(res.data.answer);}) // "配置axios.defaults.baseURL后你可以简写路径"
+        // 拦截器可以控制所有的请求
+        axios.interceptors.request.use(function(config){
+            console.log(config.url);
+            config.headers.mytoken = 'Hixzy';
+            return config;
+        },function(err){
+            console.log(err);
+        })
+        axios.get('http://127.0.0.1:3000/interceptor').then(function(data){
+            console.log(data);
+        })
+        // 响应拦截器-在获取数据前对数据做一些加工处理
+        axios.interceptors.response.use(function(res){
+            // 拿到的不是具体的数据
+            let data = res.data
+            console.log(res);
+            console.log(data);
+            return res,data;
+        },function(err){
+            console.log(err);
+        })
+        axios.get('http://127.0.0.1:3000/responseinterceptor').then(function(data){
+            console.log(JSON.stringify(data));
+        })
+    </script>
+</body>
+</html>

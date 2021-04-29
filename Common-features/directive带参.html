@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>directive带参数</title>
+</head>
+<body>
+    <!-- 改变输入域的背景颜色 -->
+    <div id="app">
+        <input type="text" v-color="info">
+        <br />
+        <input type="text" v-ccolor="info">
+    </div>
+    <script src="../srcjs/vue.js"></script>
+    <script>
+        // binding是一个对象,里面包含对指令的一些描述
+        Vue.directive('color', {
+            bind: function(el, binding) {
+                // 测试一下什么是binding
+                // https://cn.vuejs.org/v2/guide/custom-directive.html
+                console.log(binding);
+                console.log(binding.value);
+                console.log(binding.value.username);
+                // 根据指令的参数设置背景色
+                // binding.value就是指令的参数值
+                el.style.backgroundColor = binding.value.color
+                // vue实例对象也就是一个组件
+            }
+        })
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                info: {
+                    username: "zairesinatra",
+                    color: "#06B4FE",
+                    ccolor: "#FB4B63"
+                } 
+            },
+            methods: {
+
+            },
+            // 局部注册指令
+            // 注意这里是 directives
+            directives: {
+                ccolor: {
+                    bind: function (el, binding) {
+                        el.style.backgroundColor = binding.value.ccolor
+                    }
+                },
+                // 这里就可以定义多个指令
+            }
+        })
+    </script>
+</body>
+</html>

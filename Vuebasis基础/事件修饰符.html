@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事件修饰符</title>
+</head>
+<body>
+    <div id="app">
+        <!-- 传统做法通过form action提交,同时input使用submit,但是学习了ajax后很多提交方式通过ajax提交,通过按钮控制 -->
+        <form action="">
+            <div>
+                用户名:
+                <input type="text" v-on:keyup.delete='clearContent' v-model="username">
+            </div>
+            <div>
+                密码:
+                <!-- 在密码input中绑键盘事件v-on:keyup.xxx="func" -->
+                <input type="text" v-model="password" v-on:keyup.enter="handlebutton">
+            </div>
+            <div>
+                <input type="button" v-on:click="handlebutton" value="提交">
+            </div>
+        </form>
+    </div>
+    <!-- 常用的按键修饰符
+        .enter => enter键
+        .tab => tab键
+        .delete (捕获“删除”和“退格”按键) =>  删除键
+        .esc => 取消键
+        .space =>  空格键
+        .up =>  上
+        .down =>  下
+        .left =>  左
+        .right =>  右 -->
+    <script type="text/javascript" src="../srcjs/vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                username:"",
+                password:""
+            },
+            methods: {
+                handlebutton: function(){
+                    console.log(this.username,this.password);
+                },
+                clearContent: function(){
+                    // 按delete键就清空用户名
+                    this.username = '';
+                }
+            }
+        })
+    </script>
+</body>
+</html>

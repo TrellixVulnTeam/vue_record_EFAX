@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>兄弟组件传值</title>
+</head>
+<body>
+    <div id="app">
+        <div>父组件</div>
+        <test-zs></test-zs>
+        <test-zy></test-zy>
+        <div>
+            <button @click='handle'>销毁</button>
+        </div>
+    </div>
+    <script src="../srcjs/vue.js"></script>
+    <script>
+        // 定义提供全局的事件中心
+        var hub = new Vue();
+        Vue.component('test-zs', {
+            data: function () {
+                return {
+                    num: 0
+                }
+            },
+            template:`<div><div>zs:{{num}}</div><div><button @click='handle'>点击</button></div></div>`,
+            methods: {
+                handle: function () {
+                    // 触发兄弟组件的事件
+                    hub.$emit('zy-event', 1)
+                }
+            },
+            mounted:
+                // 模板就绪-可对模板进行操作
+                function () {
+                    hub.$on('zs-event', (val) => {
+                        this.num += val;
+                    })
+                }
+        })
+        Vue.component('test-zy', {
+            data: function () {
+                return {
+                    num: 0
+                }
+            },
+            template:`<div><div>zy:{{num}}</div><div><button @click='handle'>点击</button></div></div>`,
+            methods: {
+                handle: function () {
+                    // 触发兄弟组件事件
+                    hub.$emit('zs-event', 2)
+                }
+            },
+            mounted:
+            // 注意注意=>生命周期是带一个函数不是对象
+                // 模板就绪-可对模板进行操作
+                function () {
+                    hub.$on('zy-event', (val) => {
+                        this.num += val;
+                    })
+                }
+        })
+        var vm = new Vue({
+            el: "#app",
+            methods: {
+                handle: function () {
+                    hub.$off('zy-event')
+                    hub.$off('zs-event')
+                }
+            }
+        })
+    </script>
+</body>
+</html>

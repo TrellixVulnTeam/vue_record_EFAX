@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>watch</title>
+</head>
+<body>
+    <div id="app">
+        <div>
+            <span>名</span>
+            <span><input type="text" v-model="firstName"></span>
+        </div>
+        <div>
+            <span>姓</span>
+            <span><input type="text" v-model="lastName"></span>
+        </div>
+        <div>{{fullName}}</div>
+        <br />
+        <span>使用计算属性</span>
+        <div>{{ffullName}}</div>
+    </div>
+    <script src="../srcjs/vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                firstName: 'zaire',
+                lastName: "sinatra",
+                fullName: "zairesinatra"
+            },
+            // 侦听器-数据一旦改变就会触发方法
+            // 侦听器常使用异步或者开销较大的方式
+            watch: {
+                // firstName和lastName是数据
+                firstName: function (val) {
+                    this.fullName = val + '' + this.lastName
+                },
+                lastName: function(val) {
+                    this.fullName = this.firstName + '' + val;
+                }
+            },
+            // 计算属性实现
+            computed: {
+                ffullName: function() {
+                    return this.firstName + '' + this.lastName
+                }
+            }
+        })
+    </script>
+</body>
+</html>

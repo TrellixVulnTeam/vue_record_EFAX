@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自定义事件修饰符</title>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-on:keyup="getKeyCode" v-model='info' @keyup.delete="clearContent">
+        <!-- 只有输入keyup.xxx跟着的xxx才会显示出 -->
+        <input type="text" v-on:keyup.65="zsgetKeyCode" v-model='info' @keyup.delete="clearContent">
+        <!--  -->
+        <input type="text" v-on:keyup.zs="zsgetKeyCode" v-model='info' @keyup.delete="clearContent">
+    </div>
+    <script src="../srcjs/vue.js"></script>
+    <script>
+        Vue.config.keyCodes.zs = 65
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                info:""
+            },
+            methods: {
+                getKeyCode: function(event) {
+                    console.log(event.keyCode);
+                },
+                zsgetKeyCode: function(event) {
+                    console.log(event.keyCode);
+                },
+                clearContent: function() {
+                    this.info='';
+                }
+            }
+        })
+    </script>
+</body>
+</html>

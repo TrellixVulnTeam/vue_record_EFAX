@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>partial</title>
+</head>
+<body>
+    <!-- 与自定义指令、自定义过滤器有相似点 -->
+    <span> 局部注册组件仅能在注册的父组件使用 </span>
+    <div id="app">
+        <!-- 推荐下划线 -->
+        <zs-component></zs-component>
+        <zy-component></zy-component>
+    </div>
+    <script src="../srcjs/vue.js"></script>
+    <script>
+        // 定义组件的模板
+        var ZSComponent = {
+            data:function () {
+                return {
+                msg: 'hi,zairesinatra'
+                }
+            },
+            template: '<div>A partial component! - {{msg}}</div>'
+        };
+        var ZYComponent = {
+            data:function () {
+                return {
+                msg: 'hi,zy'
+                }
+            },
+            template: '<div>A partial component! - {{msg}}</div>'
+        }
+        var vm = new Vue({
+            el: "#app",
+            data: {},
+            //局部注册组件  
+            components: {
+                'zs-component': ZSComponent,
+                'zy-component': ZYComponent
+            }
+        })
+    </script>
+</body>
+</html>

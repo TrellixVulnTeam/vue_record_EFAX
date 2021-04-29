@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>验证用户名可用</title>
+    <!-- 思路: -->
+    <!-- 通过侦听器监听输入信息的变化 -->
+    <!-- 需要修改触发的事件 -->
+    <!-- 提供提示信息 -->
+    <!-- v-model数据绑定 -->
+</head>
+<body>
+    <div id="app">
+        <div>
+            <span>用户名: </span>
+            <span>
+                <input type="text" v-model="username">
+            </span>
+            <span>{{tip}}</span>
+        </div>
+    </div>
+    <script src="../srcjs/vue.js"></script>
+    <script>
+        // 要求输入内容失去焦点触发
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                username:'',
+                tip:''
+            },
+            methods: {
+                checkName: function() {
+                    var that = this;
+                    let cc = Math.random()
+                    setTimeout(function(){
+                        // 模拟接口调用
+                        if(cc>0.5){that.tip = '用户名'+ that.username +'已存在,请更换'}
+                        else {that.tip = '用户名'+ that.username +'可用'}
+                    },1500)
+                }
+            },
+            watch: {
+                // 采用侦听器监听用户名变化
+                // 调用后台接口进行验证
+                // 根据验证的结果调整提示信息
+                username: function(val){
+                    this.checkName(val)
+                }
+            }
+        })
+    </script>
+</body>
+</html>

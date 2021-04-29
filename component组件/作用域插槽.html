@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作用域插槽</title>
+    <style>
+        .current{
+            color:red
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <fruit-list :list="arr">
+            <!-- template关键性属性slot-scope得到子组件传递的数据 -->
+            <!-- 绑定在 <slot> 元素上的 attribute 被称为插槽 prop -->
+            <template v-slot="slotProps">
+                <!-- 这一行决定子组件的某一行显示成什么样子 -->
+                <strong v-if="slotProps.zidingyishuxing.id == 2" class='current'>
+                    {{slotProps.zidingyishuxing.scientificname}}
+                </strong>
+                <span v-else>{{slotProps.zidingyishuxing.scientificname}}</span>
+            </template>
+        </fruit-list>
+    </div>
+    <script src="../srcjs/vue.js"></script>
+    <script>
+        Vue.component('fruit-list', {
+            props: ['list'],
+            template:`<div><li :key='item.id' v-for='item in list'><slot :zidingyishuxing="item">{{item.scientificname}}</slot></li></div>`
+        })
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                arr: [{
+                    id: 1,
+                    scientificname: "cactus"
+                },{
+                    id: 2,
+                    scientificname: "coconut"
+                },{
+                    id: 3,
+                    scientificname: "litchi"
+                },]
+            },
+            methods: {
+
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>表单</title>
+    <style type="text/css">
+        form div {
+          height: 40px;
+          line-height: 40px;
+        }
+        form div:nth-child(4) {
+          height: auto;
+        }
+        form div span:first-child {
+          display: inline-block;
+          width: 100px;
+        }
+    </style>
+    </head>
+    <body>
+      <div id="app">
+        <!-- 要写的整体是表单 -->
+        <form action="https://zairesinatra.com">
+          <div>
+            <span>姓名：</span>
+            <span>
+              <input type="text" v-model='username'>
+            </span>
+          </div>
+          <div>
+            <span>性别：</span>
+            <span>
+                <!-- value表单控件的值-以名字/值对的形式随表单一起提交 -->
+                <!-- https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/Input -->
+                <!-- 将当前的value值改变 data 中的数据 -->
+              <input type="radio" id="male" value="0" v-model='gender'>
+              <label for="male">男</label>
+              <input type="radio" id="female" value="1" v-model='gender'>
+              <label for="female">女</label>
+            </span>
+          </div>
+          <div>
+            <span>爱好：</span>
+            <input type="checkbox" value="1" v-model='hobby'>
+            <label for="ball">网游</label>
+            <input type="checkbox" value="2" v-model='hobby'>
+            <label for="sing">睡觉</label>
+            <input type="checkbox" value="3" v-model='hobby'>
+            <label for="code">代码</label>
+          </div>
+          <div>
+            <span>职业：</span>
+            <!-- 下拉多选则添加multiple属性 -->
+            <select v-model='occupation'>
+              <option value="0">软件工程师</option>
+              <option value="1">教师</option>
+              <option value="2">医生</option>
+            </select>
+          </div>
+          <div>
+            <span>个人简介：</span>
+            <textarea v-model='desc'></textarea>
+          </div>
+          <div>
+            <!-- 阻止默认行为、使用JavaScript控制提交而不是默认提交行为 -->
+            <input type="submit" value="提交" @click.prevent='handle'>
+          </div>
+        </form>
+      </div>
+      <script type="text/javascript" src="../srcjs/vue.js"></script>
+      <script type="text/javascript">
+        var vm = new Vue({
+          el: '#app',
+          data: {
+            username: 'zs',
+            // gender默认1就是男、2即是女
+            gender: '0',
+            hobby: ['2','3'],
+            // occupation: ['1','2']
+            occupation: 0,
+            desc: 'Hi, zairesinatra'
+          },
+          methods: {
+            handle: function(){
+              console.log(this.username)
+              console.log(this.gender)
+              console.log(this.hobby.toString())
+              console.log(this.occupation)
+              console.log(this.desc)
+            }
+          }
+        });
+      </script>
+    </body>
+</html>

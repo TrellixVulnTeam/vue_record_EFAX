@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>编程式导航</title>
+</head>
+<body>
+    <div id="app">
+        <router-link :to="{ name:'zairesinatra',params: { id:'zs' } }">点我跳转</router-link>
+        <router-view></router-view>
+    </div>
+    <script src="../srcjs/vue.js"></script>
+    <script src="../srcjs/vue-router.js"></script>
+    <script>
+        // 组件定义必须在路由路径之前-否则出现Uncaught ReferenceError: Cannot access 'xzy' before initialization
+        const xzy = {
+            props:["id"],
+            template: `<div><span>不错,到这里了=>{{id}}</span><br/><button @click="goto">再点我试试</button><button @click="zzss">那点我试试</button></div>`,
+            methods: {
+                goto () {
+                    this.$router.push('/xzy')
+                },
+                zzss () {
+                    this.$router.go(-1)
+                }
+            }
+        }
+        const router = new VueRouter({
+            routes: [
+                { path:'/', redirect: '/xzy/zs' },
+                { path:'/xzy/:id', name:'zairesinatra', component:xzy, props: route=>({id:route.params.id}) }
+            ]
+        })
+        var vm = new Vue({
+            el: "#app",
+            router:router
+        })
+    </script>
+</body>
+</html>

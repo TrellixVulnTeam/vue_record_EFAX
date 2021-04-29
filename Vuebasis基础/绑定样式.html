@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v-bind绑定样式</title>
+    <link rel="stylesheet" href="./CSS/v-bind.css">
+</head>
+<body>
+    <div id="app">
+        <!-- is开头的属性名要不是true要不是false -->
+        <div v-bind:class="{active: isActive, error: isError}"></div>
+        <button v-on:click="handle">切换</button>
+        ----
+        <!-- 侧重于要给div加几个类名 -->
+        <div v-bind:class="[whichGame, whichCity, {test: isTest}]">测试数组样式</div>
+        <button v-on:click="change">切换</button>
+        ----
+        <div v-bind:class="arrClass"></div>
+    </div>
+    <script src="../srcjs/vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                isActive: true,
+                isError: true,
+                whichGame: 'mxd',
+                whichCity:'ChangSha',
+                isTest: true,
+                arrClass: ['active', 'error']
+            },
+            methods: {
+                handle: function() {
+                    // 控制isActive的值在true和false之间切换'
+                    // 本质控制类名是否添加在div中
+                    this.isActive = !this.isActive;
+                    this.isError = !this.isError;
+                },
+                change: function() {
+                    this.whichCity = ''
+                }
+            }
+        })
+        // 三个注意点
+        // 1.对象绑定与数组绑定结合
+        // 2.class绑定的值可以简化操作
+        // 3.默认的class如何处理-默认的class保留
+    </script>
+</body>
+</html>

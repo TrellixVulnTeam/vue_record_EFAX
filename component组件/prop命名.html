@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>prop规则</title>
+</head>
+<body>
+    <div id="app">
+        <div>{{msg}}</div>
+        <!-- DOM元素区分不了大小写 -->
+        <xia-hua :xia-hua-xian="zairesinatra"></xia-hua>
+        <span>---props使用驼峰式则显示不出来---</span>
+        <xia-hua :xiaHuaXian="zairesinatra"></xia-hua>
+    </div>
+    <script src="../srcjs/vue.js"></script>
+    <script>
+        Vue.component('xia-hua', {
+            props: ['xiaHuaXian'],
+            template: `<div>{{xiaHuaXian}}</div>`
+        })
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                msg: "父组件内容",
+                zairesinatra: 'youguess'
+            },
+            methods: {
+
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!-- HTML5中的申明简单=>浏览器的“信息”,说明期望的文档类型 -->
+<!DOCTYPE html>
+<!-- 较旧的HTML文档HTML 4.01: -->
+<!-- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> -->
+<!-- XHTML 1.1: -->
+<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"> -->
+<!-- 该<!DOCTYPE>声明不区分大小写 -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v-on</title>
+</head>
+<body>
+    <div id="app">
+        <div>{{num}}</div>
+        <div v-on:click="maopao">
+            <!-- 事件直接绑定函数名称，默认会传递事件对象作为事件函数的第一个参数 -->
+            <button v-on:click='handle'>点击1</button>
+            <!-- 如果事件绑定函数调用，那么事件对象必须作为最后一个参数显示传递，并且事件对象的名称必须是$event -->
+            <!-- 函数调用就是函数得加括号 -->
+            <!-- $event可以传可以不传,看是否需要 -->
+            <button v-on:click='zshandle(123, 456, $event)'>点击2</button>
+        </div>
+        <div v-on:click="zuzhimaopao">
+            <button v-on:click="nobubble">nobubble</button>
+        </div>
+        <div v-on:click="caozuofuzuzhi">
+            <button v-on:click.stop="caozuofu">操作符阻止冒泡</button>
+        </div>
+        <!-- 阻止默认行为=>一般是a标签的跳转 -->
+        <div>
+            <a href="https://zairesinatra.com">zsblog</a>
+            <a href="https://zairesinatra.com" v-on:click="nozsblog">原生js阻止跳转zsblog</a>
+            <a href="https://zairesinatra.com" v-on:click.prevent="zszszs">通过事件修饰符阻止跳转zsblog</a>
+        </div>
+        <!-- 串联一块写即阻止冒泡、又阻止默认行为 -->
+        <!-- <a v-on:click.stop.prevent="dosth"> -->
+        <!-- 先后顺序差异 -->
+        <!-- v-on:click.prevent.self=>阻止所有点击 -->
+        <!-- v-on:click.self.prevent=>阻止对元素自身的点击 -->
+    </div>
+    <script type="text/javascript" src="../srcjs/vue.js"></script>
+    <script type="text/javascript">
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                num: 0
+            },
+            methods: {
+                maopao: function(){
+                    this.num++ // 因为冒泡所以值会增加两次
+                },
+                handle: function(event) {
+                    console.log(event.target.innerHTML)
+                },
+                zshandle: function(p, p1, event) { // 形参接受
+                    console.log(p, p1)
+                    console.log(event.target.innerHTML) // 触发事件的对象 (某个DOM元素) 的引用
+                    this.num++;
+                },
+                zuzhimaopao: function(){
+                    this.num++ // 因为冒泡所以值会增加两次
+                },
+                nobubble: function(event){
+                    // 原生阻止冒泡
+                    event.stopPropagation(); // 不会加1
+                },
+                caozuofuzuzhi: function(){
+                    this.num++ // 因为冒泡所以值会增加两次
+                },
+                caozuofu: function(){
+                    console.log('操作符禁止冒泡')
+                },
+                nozsblog: function(event){
+                    console.log("不会跳转到zs的博客");
+                    // 原生阻止默认行为
+                    event.preventDefault();
+                },
+                zszszs: function(){
+                    console.log("通过事件修饰符阻止跳转到zs的博客");
+                }
+            }
+        });
+    </script>
+</body>
+</html>

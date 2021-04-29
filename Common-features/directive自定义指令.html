@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>directive</title>
+</head>
+<body>
+    <div id="app">
+        <!-- 自定义组件不能使用驼峰命名法 -->
+        <input type="text" v-autofocus>
+    </div>
+    <script src="../srcjs/vue.js"></script>
+    <script>
+        // Vue中的API=>Vue.directive('参数一', {参数二})
+        // 第一个参数是指令的名称,第二个参数是实现自定义指令的业务逻辑
+        Vue.directive('autofocus', {
+            // inserted是固定、el也是固定-指令钩子函数会被传入的参数=>element的简写,指令所绑定的元素
+            // 钩子函数inserted:被绑定元素插入父节点时调用(仅保证父节点存在,但不一定已被插入文档中)
+            // https://cn.vuejs.org/v2/guide/custom-directive.html
+            inserted: function(el) {
+                // 定义时不加v-;使用时才加
+                el.focus();
+            }
+        });
+        var vm = new Vue({
+            el: "#app",
+            data: {
+
+            },
+            methods: {
+
+            }
+        })
+    </script>
+</body>
+</html>

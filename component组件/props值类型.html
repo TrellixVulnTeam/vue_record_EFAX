@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>props值类型</title>
+</head>
+<body>
+    <div id="app">
+        <test-xiahuaxian :xhx="xhx" :pnum="666" num="666">{{xhx}}</test-xiahuaxian>
+        <!-- 绑定什么数据是可以选择的 -->
+        <render-arr :parr="whichparr" :usr="user"></render-arr>
+    </div>
+    <script src="../srcjs/vue.js"></script>
+    <script>
+        Vue.component('renderArr',{
+            // 不能省略了'usr'=>否则模板中识别不了就不会渲染
+            props: ['parr', 'usr'],
+            // template中参数与props数组中名称一致
+            template:
+                `<div>
+                    <ul>
+                        <li :key="index" v-for="(item,index) in parr">{{item}}</li>
+                    </ul>
+                    <div>
+                        <span>{{usr.name}}</span>
+                        <span>{{usr.age}}</span>
+                    </div>
+                </div>
+                `
+        })
+        Vue.component('test-xiahuaxian', {
+            props: ['xhx','pnum','num'],
+            template: `<div><div>{{xhx}}</div><div>typeof pnum=>{{typeof pnum}}</div><div>typeof num=>{{typeof num}}</div></div>`
+        })
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                xhx: "父组件-下划线",
+                whichparr: ['coconut','ananas','walnut'],
+                user: {
+                    name: "xw",
+                    age: "54"
+                }
+            },
+            methods: {
+
+            }
+        })
+    </script>
+</body>
+</html>

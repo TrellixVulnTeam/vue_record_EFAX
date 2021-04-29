@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>分支循环结构</title>
+</head>
+<body>
+    <!-- v-for遍历对象 -->
+    <!-- <div v-for='(value, key, index) in object'></div> -->
+    <!-- v-if和v-for结合使用 -->
+    <!-- <div v-if='value==6' v-for='(value, key, index) in object'></div> -->
+    <div id="app">
+        <!-- 对象顺序是固定的=>值、键、索引与数组遍历一样 -->
+        <div v-for="(v, k, i) in obj">{{v + '---' + k + '---' + i}}</div>
+        <!-- 条件满足才会渲染v-if/v-for -->
+        <div v-if="v == 23" v-for="(v, k, i) in obj">{{v + '---' + k + '---' + i}}</div>
+    </div>
+    <script src="../srcjs/vue.js"></script>
+    <script>
+        // 原生JavaScript实现
+        var jsobj = {
+            uname: 'zairesinatra',
+            age: 23,
+            gender: 'male'
+        }
+        for(let key in jsobj) {
+            console.log(key,jsobj[key]);
+        }
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                obj: {
+                    // 记死这里用的是冒号
+                    uname: 'zairesinatra',
+                    age: 23,
+                    gender: 'male'
+                }
+            },
+            methods: {
+
+            }
+        })
+    </script>
+</body>
+</html>

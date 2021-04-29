@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>循环结构</title>
+    <link rel="stylesheet" href="./CSS/v-for.css">
+</head>
+<body>
+    <div id="app">
+        <ul>
+            <!-- item其中一项数据 in关键字 fruits属性名 -->
+            <!-- item自定义,不过注意用的是item就得插值表达式中表示item -->
+            <li v-for="item in fruits">{{item}}</li>
+            <br />
+            <!-- 有时候需要访问遍历数据的索引 -->
+            <!-- 索引从0开始,与数组索引类似 -->
+            <!-- 与item类似,index也是自定义 -->
+            <li v-for="(item,index) in fruits">{{item + '---' + index}}</li>
+            <br />
+            <span>注意这里显示含对象的数组</span>
+            <br />
+            <!-- 遍历就加key -->
+            <!-- :key="唯一值"帮助Vue提高性能 -->
+            <li :key="item.id" v-for="(item, index) in myFruits">
+                <span>{{item.ename}}</span>
+                <span>{{item.cname}}</span>
+                <span>{{index}}</span>
+            </li>
+            <br />
+            <!-- 尽管数据变得复杂,仅需要找到所需数据是所需项的属性即可 -->
+        </ul>
+    </div>
+    <script src="../srcjs/vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                fruits: ['coconut', 'bayberry', 'mangosteen'],
+                myFruits: [{
+                    id:1,
+                    ename: 'apple',
+                    cname: '苹果'
+                },{
+                    id:2,
+                    ename: 'strawberry',
+                    cname: '草莓'
+                },{
+                    id:3,
+                    ename: 'grape',
+                    cname: '葡萄'
+                }]
+            },
+            methods: {
+                
+            }
+        })
+    </script>
+</body>
+</html>

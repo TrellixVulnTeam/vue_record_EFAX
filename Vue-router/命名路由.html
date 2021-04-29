@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>命名路由</title>
+</head>
+<body>
+    <div id="app">
+        <!-- 命名路由中 to 属性前面加 : 表示属性绑定 -->
+        <router-link :to="{ name:'zairesinatra', params: { id: 6 } }">命名路由</router-link>
+        <!-- 对比测试 -->
+        <router-link :to="{ name:'zairesinatra', params: { id: 666 } }">命名路由</router-link>
+        <router-view></router-view>
+    </div>
+    <script src="../srcjs/vue.js"></script>
+    <script src="../srcjs/vue-router.js"></script>
+    <script>
+        const xzy = {
+            // 记住props数组中的参数一定是字符串的形式
+            props: ['id'],
+            template: `<span>是我吖 => {{id}} </span>`
+        }
+        const router = new VueRouter({
+            routes: [
+                { path: '/', redirect: '/xzy'},
+                // 命名路由这里只能是 name 不可以是其他的名称
+                // 没有写 props: route => ({id: route.params.id}) 导致出不来 6
+                { path: '/xzy/:id', name: 'zairesinatra', component: xzy, props: route => ({id: route.params.id}) }
+            ]
+        })
+        var vm = new Vue({
+            el: "#app",
+            router: router
+        })
+    </script>
+</body>
+</html>

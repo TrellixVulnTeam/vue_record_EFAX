@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全局component</title>
+</head>
+<body>
+    <!-- 组件可以重复使用多次,因为data中返回的是一个对象所以每个组件中的数据是私有的,即每个实例可以维护一份被返回对象的独立的拷贝 -->
+    <!-- 必须使用短横线的方式使用组件,如果使用驼峰式命名组件,那么在使用组件的时候,只能在字符串模板中用驼峰的方式使用组件,而普通的标签模板中,必须使用短横线的方式使用组件 -->
+    <div id="zairesinatra">
+        <count></count>
+        <!-- 每一个组件都是一个实例,相互的数据不会影响 -->
+        <count></count>
+    </div>
+    <script src="../srcjs/vue.js"></script>
+    <script>
+        // 通过API注册
+        // 这是子组件,故放在Vue实例的容器中
+        Vue.component('count',{
+            data: function () {
+                // 返回每个实例独立的值-写成对象就会报错
+                return {
+                    num: 0,
+                    nn: 0
+                }
+            },
+            // 组件模板的内容必须是单个根元素
+            // ’<button @click=""num++>clickme{{num}}次</button><button>测试</button>‘就会报错
+            // 可以改成’<div><button @click=""num++>clickme{{num}}次</button><button>测试</button></div>‘
+            template: '<button @click="num++">clickme{{num}}次</button>',
+            methods: {
+                handle: function () {
+                    this.nn++
+                }
+            }
+        })
+        var vm = new Vue({
+            el: "#zairesinatra",
+            data: {
+                // Vue实例的data是对象、模板的data是函数
+            }
+        })
+    </script>
+</body>
+</html>

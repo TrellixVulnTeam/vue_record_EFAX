@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>具名插槽</title>
+</head>
+<body>
+    <div id="app">
+        <zs>
+            <p slot="aaa">头部信息</p>
+            <p slot="bbb">底部信息</p>
+            <!-- 没有匹配到就会放在默认插槽中 -->
+            <p>其他信息</p>
+            <p>zyzyzyzyzy</p>
+            <div class='otherway'>
+                <template>
+                <!-- 注意插槽仅用一次 -->
+                <!-- <template slot="aaa"> -->
+                    <p>template标签临时性的包裹里面的内容,并不会渲染到页面</p>
+                </template>
+            </div>
+        </zs>
+    </div>
+    <script src="../srcjs/vue.js"></script>
+    <script>
+        Vue.component('zs', {
+            template: `<div><slot name="aaa"></slot><main><slot></slot></main><slot name="bbb"></slot></div>`
+        })
+        var vm = new Vue({
+            el: "#app",
+            data: {
+
+            },
+            methods: {
+
+            }
+        })
+    </script>
+</body>
+</html>

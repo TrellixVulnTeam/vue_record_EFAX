@@ -1,0 +1,21 @@
+.active {
+    border: 1px solid red;
+    width: 100px;
+    height: 100px;
+}
+/* 注释是这种符号记住了 */
+.error {
+    background-color: #06B4FE;
+}
+.mxd {
+    border: 1px solid rgb(94, 37, 160);
+    width: 200px;
+    height: 200px;
+}
+.ChangSha {
+    color: coral;
+}
+.test {
+    font-size: large;
+    background-color: cornflowerblue;
+}

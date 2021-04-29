@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>async-await</title>
+</head>
+<body>
+    <script src="../../srcjs/axios/dist/axios.js"></script>
+    <script>
+        axios.defaults.baseURL = 'http://127.0.0.1:3000/';
+
+        // 单个异步请求
+        // async作为一个关键字放到函数前面
+        async function testasync(){
+            // await关键字只能在使用async定义的函数中使用
+            let res = await axios.get('testasync');
+            // 代码风格更加简洁不需要写then()
+            console.log(res);
+            console.log(res.data);
+            return res.data;
+        }
+        testasync().then(function(upmsg){
+            console.log(upmsg);
+        })
+        // async返回值是一个新的promise实例对象
+        async function testyb() {
+            // await后面可以直接跟一个Promise实例对象
+            let res = await new Promise(function(resolve,reject){
+                setTimeout(function(){
+                    resolve("Hi,zairesinatra use the async fn test the new Promise obj")
+                }, 1500)
+            })
+            // 任何一个async函数都会隐式返回一个promise,可以使用then进行链式编程
+            return res;
+        }
+        testyb().then((res)=>{
+            console.log(res);
+        })
+
+        // 多个异步请求-保证顺序
+        // 只需要在async函数中顺序写出await的异步任务即可
+        async function multipleasynchronousrequests() {
+            let info = await axios.get('multipleasynchronousrequests');
+            let infoo = await axios.get('multipleasynchronousrequestsduplicate?info=' + info.data);
+            return infoo.data
+        }
+        multipleasynchronousrequests().then((result)=>{
+            console.log(result);
+        })
+    </script>
+</body>
+</html>

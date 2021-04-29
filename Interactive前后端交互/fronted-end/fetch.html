@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fetch</title>
+</head>
+<body>
+    <script>
+        // 基本操作
+        fetch('http://127.0.0.1:3000/xzyfetch').then(res=>res.text()).then(msg=>console.log(msg))
+        fetch('http://127.0.0.1:3000/xzyfetch').then(function(res){
+            return res.text();
+        }).then(function(msg){
+            console.log(msg);
+        })
+        // 请求参数=>method(string)、body(string)、headers(object)
+        // get请求(默认)
+        fetch('http://127.0.0.1:3000/getfetch?usr=zairesinatra', {
+            method: 'get'
+        }).then(function(res){
+            return res.text();
+        }).then(function(msg){
+            console.log(msg); // 传统URL传递参数[object Object]zairesinatra
+        })
+
+        fetch('http://127.0.0.1:3000/restfulfetch/666', {
+            method: 'get'
+        }).then(function(res){
+            return res.text();
+        }).then(function(msg){
+            console.log(msg); // Restful形式的URL传递参数[object Object]666
+        })
+        // delete请求
+        fetch('http://127.0.0.1:3000/deletefetch/886', {
+            method: 'delete'
+        }).then(function(res){
+            return res.text();
+        }).then(function(msg){
+            console.log(msg);
+        })
+        // post请求
+        fetch('http://127.0.0.1:3000/postfetch', {
+            method: 'post',
+            body: 'usr=zs&pwd=666',
+            // headers: {
+            //     'Content-Type':'application/x-www-form-urlencoded'
+            // }
+        }).then(function(o){
+            return o.text();
+        }).then(function(msg){
+            console.log(msg); 
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v-model</title>
+</head>
+<body>
+    <div id="app">
+        <div>msg: {{msg}}</div>
+        底层实现=><!-- v-model双向绑定本质就是v-bind绑定一个值,并使用v-on处理值得变化 -->
+        <input type="text" v-bind:value="msg" v-on:input="handle">
+        </br>
+        msg=$event.target.value=><input type="text" v-bind:value="msg" v-on:input="msg=$event.target.value">
+    </div>
+    <script src="../srcjs/vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                msg: "hello zairesinatra"
+            },
+            methods: {
+                // 默认函数触发带过来event对象
+                handle: function(e) {
+                    this.msg = e.target.value;
+                }
+            }
+        })
+    </script>
+</body>
+</html>
