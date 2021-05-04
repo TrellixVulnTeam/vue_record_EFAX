@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>nestedRouter</title>
+</head>
+<body>
+    <div id="app">
+        <p>
+            <!-- 切记 <router-link to="/usr/zy"> 中需要/ -->
+            <!-- 以 `/` 开头的嵌套路径会被当作根路径 这让你充分的使用嵌套组件而无须设置嵌套的路径 -->
+            <router-link to="/usr/zy">usr/zy</router-link>
+            <router-link to="/usr/zy/profile">usr/zy/profile</router-link>
+            <router-link to="/usr/zy/proj">usr/zy/proj</router-link>
+        </p>
+        <router-view></router-view>
+    </div>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    <script>
+        const Usr = {
+            template:`<div class="Usr"><div> Usr {{ $route.params.id }} </div><router-view></router-view></div>`
+        }
+        const UsrHome = {
+            template:`<div>UsrHome --- {{ $route.params.id }}</div>`
+        }
+        const UsrProfile = {
+            template:`<div>UsrProfile --- {{ $route.params.id }}</div>`
+        }
+        const Usrproj = {
+            template:`<div>Usrproj --- {{ $route.params.id }}</div>`
+        }
+        const router = new VueRouter({
+            routes: [
+                { path: '/usr/:id', component: Usr,
+                    children: [
+                        { path: '', component: UsrHome },
+                        { path: 'profile', component: UsrProfile },
+                        // 这里的 path 不要加 /
+                        { path: 'proj', component: Usrproj },
+                    ]
+            }
+            ]
+        })
+        var app = new Vue({
+            el: '#app',
+            router
+        }).$mount('#app')
+    </script>
+</body>
+</html>
