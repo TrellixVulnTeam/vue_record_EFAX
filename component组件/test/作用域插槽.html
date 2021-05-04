@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>zyy</title>
+</head>
+<body>
+    <div id="app">
+        <todo-list>
+            <template v-slot="slotProps">
+                <i></i>
+                <span>{{ slotProps.item }}</span>
+            </template>
+        </todo-list>
+    </div>
+    <script src="../../srcjs/vue.js"></script>
+    <script>
+        Vue.component('todo-list', {
+            data() {
+                return {
+                    items: ['Feed a cat', 'Buy milk']
+                }
+            },
+            template: `
+                <ul>
+                <li v-for="(item, index) in items">
+                    <slot :item="item"></slot>
+                </li>
+                </ul>
+            `
+        })
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                
+            },
+            methods: {
+
+            }
+        })
+    </script>
+</body>
+</html>

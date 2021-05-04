@@ -125,9 +125,219 @@ const User = {
 
 ### 嵌套路由
 
-URL 中各段动态路径按某种结构对应嵌套的各层组件。
+URL 中各段动态路径按某种结构对应嵌套的各层组件。借助 `vue-router`，使用嵌套路由配置，就可以很简单地表达这种关系。
 
 <img src="./assets/嵌套路由.png" width="50%">
+
+```html
+<div id="app">
+  <!--最顶层的出口,渲染最高级路由匹配到的组件-->
+  <router-view></router-view>
+</div>
+```
+
+```js
+const User = {
+  template: '<div>User {{ $route.params.id }}</div>'
+}
+
+const router = new VueRouter({
+  routes: [{ path: '/user/:id', component: User }]
+})
+```
+
+同样地，一个被渲染组件同样可以包含自己的嵌套 `<router-view>`。例如，在 `User` 组件的模板添加一个 `<router-view>`：
+
+```js
+const User = {
+  template: `
+    <div class="user">
+      <h2>User {{ $route.params.id }}</h2>
+      <router-view></router-view>
+    </div>
+  `
+}
+```
+
+要在嵌套的出口中渲染组件，需要在 `VueRouter` 的参数中使用 `children` 配置：
+
+```js
+const router = new VueRouter({
+  routes: [
+    {
+      path: '/user/:id',
+      component: User,
+      children: [
+        {
+          // 当 /user/:id/profile 匹配成功 UserProfile 会被渲染在 User 的 <router-view> 中
+          path: 'profile',
+          component: UserProfile
+        },
+        {
+          // 当 /user/:id/proj 匹配成功 UserProj 会被渲染在 User 的 <router-view> 中
+          path: 'proj',
+          component: UserProj
+        }
+      ]
+    }
+  ]
+})
+```
+
+**要注意，以 `/` 开头的嵌套路径会被当作根路径。 这让你充分的使用嵌套组件而无须设置嵌套的路径。**
+
+`children` 配置就是像 `routes` 配置一样的路由配置数组 => 嵌套多层路由
+
+基于上面的配置，当你访问 `/user/foo` 时，`User` 的出口是不会渲染任何东西，这是因为没有匹配到合适的子路由。如果你想要渲染点什么，可以提供一个 空的 子路由：
+
+```js
+const router = new VueRouter({
+  routes: [
+    {
+      path: '/user/:id',
+      component: User,
+      children: [
+        // 当 /user/:id 匹配成功 UserHome 会被渲染在 User 的 <router-view> 中
+        { path: '', component: UserHome }
+        // ...其他子路由
+      ]
+    }
+  ]
+})
+```
+
+------
+
+### 编程式的导航
+
+除了使用 `<router-link>` 创建 a 标签来**定义导航链接**，我们还可以借助 router 的实例方法，通过编写代码来实现。
+
+`router.push(location, onComplete?, onAbort?)`
+
+------
+
+###  命名路由
+
+有时候，通过一个名称来标识一个路由显得更方便一些，特别是在链接一个路由，或者是执行一些跳转的时候。你可以在创建 Router 实例的时候，在 `routes` 配置中给某个路由设置名称。
+
+```js
+const router = new VueRouter({
+  routes: [
+    { path: '/user/:userId', name: 'user', component: User }
+  ]
+})
+```
+
+要链接到一个命名路由，可以给 `router-link` 的 `to` 属性传一个对象：
+
+```html
+<router-link :to="{ name: 'user', params: { userId: 123 }}">User</router-link>
+```
+
+这跟代码调用 `router.push()` 是一回事：
+
+```js
+router.push({ name: 'user', params: { userId: 123 } })
+```
+
+这两种方式都会把路由导航到 `/user/123` 路径。
+
+------
+
+### 命名视图
+
+------
+
+### 重定向和别名
+
+- 重定向
+
+重定向也是通过 `routes` 配置来完成，下面例子是从 `/a` 重定向到 `/b`：
+
+```js
+const router = new VueRouter({
+  routes: [
+    { path: '/a', redirect: '/b' }
+  ]
+})
+```
+
+**重定向的目标不仅可以是路径也可以是一个命名的路由**：
+
+```js
+const router = new VueRouter({
+  routes: [
+    { path: '/a', redirect: { name: 'foo' }}
+  ]
+})
+```
+
+甚至是一个方法，动态返回重定向目标：
+
+```js
+const router = new VueRouter({
+  routes: [
+    { path: '/a', redirect: to => {
+      // 方法接收 目标路由 作为参数
+      // return 重定向的 字符串路径/路径对象
+    }}
+  ]
+})
+```
+
+- 别名
+
+“重定向”的意思是，当用户访问 `/a`时，URL 将会被替换成 `/b`，然后匹配路由为 `/b`，那么“别名”又是什么呢？
+
+**`/a` 的别名是 `/b`，意味着，当用户访问 `/b` 时，URL 会保持为 `/b`，但是路由匹配则为 `/a`，就像用户访问 `/a` 一样。**
+
+```js
+const router = new VueRouter({
+  routes: [
+    { path: '/a', component: A, alias: '/b' }
+  ]
+})
+```
+
+------
+
+### 路由组件传参
+
+在组件中使用 `$route` 会使之与其对应路由形成高度耦合，从而使组件只能在某些特定的 URL 上使用，限制了其灵活性。
+
+使用 `props` 将组件和路由解耦：**取代与 `$route` 的耦合**
+
+```js
+const User = {
+  template: '<div>User {{ $route.params.id }}</div>'
+}
+const router = new VueRouter({
+  routes: [{ path: '/user/:id', component: User }]
+})
+```
+
+```js
+const User = {
+  props: ['id'],
+  template: '<div>User {{ id }}</div>'
+}
+const router = new VueRouter({
+  routes: [
+    { path: '/user/:id', component: User, props: true },
+
+    // 对于包含命名视图的路由，你必须分别为每个命名视图添加 `props` 选项：
+    {
+      path: '/user/:id',
+      components: { default: User, sidebar: Sidebar },
+      props: { default: true, sidebar: false }
+    }
+  ]
+})
+```
+
+如果 `props` 被设置为 `true`，`route.params` 将会被设置为组件属性。
+
+如果 `props` 是一个对象，它会被按原样设置为组件属性。当 `props` 是静态的时候有用。
 
 ------
 
