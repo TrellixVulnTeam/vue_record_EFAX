@@ -654,3 +654,5 @@ package.json文件记录你项目中所需要的所有模块
 - 关于 Linux 中 rc 文件
 
 rc 文件为 Run-ControlFiles ，在系统初始化阶段运行的一个配置脚本文件 
+
+### [要求或禁止函数圆括号之前有一个空格 (space-before-function-paren)](https://cn.eslint.org/docs/rules/space-before-function-paren)
